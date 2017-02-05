@@ -127,7 +127,7 @@ Choose the middle iteration to get the images processed per sec
 '''
 def images_processed(log_loc):
     f=open(log_loc)
-    img_per_sec = re.findall("(?:Batch\s+\[30\]\\\\tSpeed:\s+)(\d+\.\d+)(?:\s+)", str(f.readlines()))
+    img_per_sec = re.findall("(?:Epoch\[2\]\s+Batch\s+\[30\]\\\\tSpeed:\s+)(\d+\.\d+)(?:\s+)", str(f.readlines()))
     f.close()
     img_per_sec = map(float, img_per_sec)
     total_img_per_sec = sum(img_per_sec)
@@ -151,7 +151,7 @@ def stop_old_processes(hosts_file):
 def run_imagenet(kv_store, data_shape, batch_size, num_gpus, num_nodes, network, args_workers_file):
     imagenet_args=['python',  'train_imagenet.py',  '--gpus', ','.join(str(i) for i in range(num_gpus)), \
                    '--network', network, '--batch-size', str(batch_size * num_gpus), \
-                   '--image-shape', '3,' + str(data_shape) + ',' + str(data_shape), '--num-epochs', '1' ,'--kv-store', kv_store, '--benchmark', '1', '--disp-batches', '10']
+                   '--image-shape', '3,' + str(data_shape) + ',' + str(data_shape), '--num-epochs', '3' ,'--kv-store', kv_store, '--benchmark', '1', '--disp-batches', '10']
     log = log_loc + '/' + network + '_' + str(num_nodes*num_gpus) + '_log'
     hosts = log_loc + '/' + network + '_' + str(num_nodes*num_gpus) + '_workers'
     generate_hosts_file(num_nodes, hosts, args_workers_file)
